@@ -34,7 +34,7 @@ public class ImpaleListener implements Listener {
                 target.getLocation().getBlockY() >= target.getLocation().getWorld().getHighestBlockYAt(target.getLocation());
         boolean inWater = target.isInWater();
 
-        if (inRain || inWater) {
+        if ((inRain || inWater) && !isAquatic(target)) {
             double extraDamage = level * main.getDamagePerLevel();
             e.setDamage(e.getDamage() + extraDamage);
 
@@ -42,5 +42,13 @@ public class ImpaleListener implements Listener {
                 main.getServer().broadcastMessage("[DEBUG] Extra impaling damage applied: " + extraDamage +
                         " (Level: " + level + ", InWater: " + inWater + ", InRain: " + inRain + ")");
         }
+    }
+
+    private boolean isAquatic(LivingEntity entity) {
+        return switch (entity.getType()) {
+            case AXOLOTL, TURTLE, COD, DOLPHIN, GLOW_SQUID, PUFFERFISH, SALMON, SQUID, TADPOLE, TROPICAL_FISH, GUARDIAN,
+                 ELDER_GUARDIAN -> true;
+            default -> false;
+        };
     }
 }
