@@ -7,6 +7,7 @@ public final class Main extends JavaPlugin {
     private static Main main;
 
     private double damagePerLevel;
+    private boolean debugLogs;
 
     @Override
     public void onEnable() {
@@ -27,10 +28,15 @@ public final class Main extends JavaPlugin {
     public void loadConfigData() {
         reloadConfig();
         damagePerLevel = getConfig().getDouble("impaling-damage-per-level", 2.5);
+        debugLogs = getConfig().getBoolean("debug-logs", false);
     }
 
     public double getDamagePerLevel() {
         return damagePerLevel;
+    }
+
+    public boolean isDebugMode() {
+        return debugLogs;
     }
 
     public static Main getInstance() {

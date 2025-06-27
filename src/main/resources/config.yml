@@ -1,2 +1,5 @@
 # Default damage per Impaling Level
 impaling-damage-per-level: 2.5
+
+#Print debug statements
+debug-logs: false

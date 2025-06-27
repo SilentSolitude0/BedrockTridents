@@ -14,22 +14,33 @@ public class ImpaleListener implements Listener {
     public void onTridentHit(EntityDamageByEntityEvent e) {
         Main main = Main.getInstance();
 
-        if (!(e.getDamager() instanceof Trident trident)) return;
+        LivingEntity target = (e.getEntity() instanceof LivingEntity) ? (LivingEntity) e.getEntity() : null;
+        if (target == null) return;
 
-        ItemStack item = trident.getItem();
-        if (!item.containsEnchantment(Enchantment.IMPALING)) return;
+        ItemStack weapon = null;
+        int level = 0;
 
-        if (!(e.getEntity() instanceof LivingEntity)) return;
+        if (e.getDamager() instanceof Trident trident) {
+            weapon = trident.getItem();
+        }
+        else if (e.getDamager() instanceof LivingEntity attacker) {
+            weapon = attacker.getEquipment().getItemInMainHand();
+        }
 
-        int level = item.getEnchantmentLevel(Enchantment.IMPALING);
+        if (weapon == null || !weapon.containsEnchantment(Enchantment.IMPALING)) return;
+        level = weapon.getEnchantmentLevel(Enchantment.IMPALING);
 
-        boolean inRain = e.getEntity().getLocation().getWorld().hasStorm() &&
-                e.getEntity().getLocation().getBlockY() >= e.getEntity().getLocation().getWorld().getHighestBlockYAt(e.getEntity().getLocation());
-        boolean inWater = e.getEntity().isInWater();
+        boolean inRain = target.getLocation().getWorld().hasStorm() &&
+                target.getLocation().getBlockY() >= target.getLocation().getWorld().getHighestBlockYAt(target.getLocation());
+        boolean inWater = target.isInWater();
 
         if (inRain || inWater) {
             double extraDamage = level * main.getDamagePerLevel();
             e.setDamage(e.getDamage() + extraDamage);
+
+            if (main.isDebugMode())
+                main.getServer().broadcastMessage("[DEBUG] Extra impaling damage applied: " + extraDamage +
+                        " (Level: " + level + ", InWater: " + inWater + ", InRain: " + inRain + ")");
         }
     }
 }
