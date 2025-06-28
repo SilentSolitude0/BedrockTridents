@@ -17,7 +17,7 @@ public final class Main extends JavaPlugin {
         loadConfigData();
 
         getServer().getPluginManager().registerEvents(new ImpaleListener(), this);
-        getCommand("bedrocktridentsreload").setExecutor(new ReloadCommand(this));
+        getCommand("bedrocktridentsreload").setExecutor(new ReloadCommand());
     }
 
     @Override
