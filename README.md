@@ -12,7 +12,7 @@ This plugin brings Bedrock's functionality allowing for damaging all mobs in wat
 
 ```yaml
 impaling-damage-per-level: 2.5
-debug-logs: true
+debug-logs: false
 ```
 
 - Sets the extra damage dealt per level of Impaling.
